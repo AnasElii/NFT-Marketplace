@@ -1,0 +1,33 @@
+{
+  "name": "nft_marketplace",
+  "version": "1.0.0",
+  "description": "nft_marketplace  Smart Contract is a simple small contract to create the back bone for a simple Dapp market place using the hardhat framework with Web3.Js and Ethers.Js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnasElii/NFT_Marketplace.git"
+  },
+  "keywords": [
+    "smart",
+    "contract",
+    "ethereum",
+    "solidity",
+    "market",
+    "place",
+    "NFT",
+    "NFT's"
+  ],
+  "author": "Anas El",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AnasElii/NFT_Marketplace/issues"
+  },
+  "homepage": "https://github.com/AnasElii/NFT_Marketplace#readme",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.0.2"
+  }
+}
