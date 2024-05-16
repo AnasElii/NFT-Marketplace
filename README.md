@@ -1,5 +1,6 @@
-# NFT_Marketplace
 # NFT Marketplace
+
+![npl2](https://i.imgur.com/YttaPcE.png)
 
 ## Overview
 
