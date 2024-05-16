@@ -1,7 +1,9 @@
 artifacts/
 cache/
+deployments/
 /artificts
 /cache
+/deployments
 
 node_modules/
 jspm_packages/
