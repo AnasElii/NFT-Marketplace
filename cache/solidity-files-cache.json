@@ -37,45 +37,6 @@
         "Counters"
       ]
     },
-    "/home/aninoss/NFT_Marketplace/contracts/nft_marketplace.sol": {
-      "lastModificationDate": 1715876748562,
-      "contentHash": "1b170b9ad012cba6a7864c6d38621ceb",
-      "sourceName": "contracts/nft_marketplace.sol",
-      "solcConfig": {
-        "version": "0.8.24",
-        "settings": {
-          "evmVersion": "paris",
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./Counters.sol",
-        "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "NFTMarketplace"
-      ]
-    },
     "/home/aninoss/NFT_Marketplace/node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol": {
       "lastModificationDate": 1715811282874,
       "contentHash": "50d770b698931f015309e77a750f54f6",
@@ -641,6 +602,45 @@
       ],
       "artifacts": [
         "IERC721Metadata"
+      ]
+    },
+    "/home/aninoss/NFT_Marketplace/contracts/NFTMarketplace.sol": {
+      "lastModificationDate": 1715891727927,
+      "contentHash": "1b170b9ad012cba6a7864c6d38621ceb",
+      "sourceName": "contracts/NFTMarketplace.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Counters.sol",
+        "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "NFTMarketplace"
       ]
     }
   }
