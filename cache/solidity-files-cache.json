@@ -38,8 +38,8 @@
       ]
     },
     "/home/aninoss/NFT_Marketplace/contracts/nft_marketplace.sol": {
-      "lastModificationDate": 1715871583580,
-      "contentHash": "f0cc4d0970540c5b04041ae6bb88355c",
+      "lastModificationDate": 1715876748562,
+      "contentHash": "1b170b9ad012cba6a7864c6d38621ceb",
       "sourceName": "contracts/nft_marketplace.sol",
       "solcConfig": {
         "version": "0.8.24",

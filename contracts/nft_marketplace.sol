@@ -30,11 +30,11 @@ contract NFTMarketplace is ERC721URIStorage {
         contractOwner = payable(msg.sender);
     }
 
-    function mintNFT(string memory _tokenURI, uint price) public payable {
+    function mintNFT(string memory _tokenURI, uint price) external payable {
         uint nftId = Counters.current(_nftIds);
 
         require(
-            address(msg.sender).balance >= listingPrice,
+            msg.value >= listingPrice,
             "Insufficient funds sent"
         );
 
@@ -66,7 +66,7 @@ contract NFTMarketplace is ERC721URIStorage {
         Counters.increment(_nftIds);
     }
 
-    function getAllNFTs() public view returns (NFT[] memory) {
+    function getAllNFTs() external view returns (NFT[] memory) {
         uint totlaItemCount = Counters.current(_nftIds);
         NFT[] memory items = new NFT[](totlaItemCount);
 
@@ -78,7 +78,7 @@ contract NFTMarketplace is ERC721URIStorage {
         return items;
     }
 
-    function getMyNfts() public view returns (NFT[] memory) {
+    function getMyNfts() external view returns (NFT[] memory) {
         uint totlaItemCount = Counters.current(_nftIds);
         uint totalMyNfts = 0;
 
@@ -100,7 +100,7 @@ contract NFTMarketplace is ERC721URIStorage {
         return items;
     }
 
-    function buyNFT(uint id) public payable {
+    function buyNFT(uint id) external payable {
         require(id < Counters.current(_nftIds), "The Provided nft not exit");
         uint256 price = _idToNFT[id].price;
         address payable seller = _idToNFT[id].owner;
