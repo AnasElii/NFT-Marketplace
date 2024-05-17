@@ -1,9 +1,9 @@
-![image](https://github.com/AnasElii/NFT-Marketplace/assets/57045844/e4f37db4-157b-4ce8-8e15-153e2623bd9c)# NFT Marketplace
+# NFT Marketplace
 
 ![npl2](https://i.imgur.com/YttaPcE.png)
 
 The following is a UML sequence diagram of the project
-![npl2](https://i.imgur.com/Uv3SUEe.png)
+![npl2](https://github.com/AnasElii/NFT-Marketplace/assets/57045844/e4f37db4-157b-4ce8-8e15-153e2623bd9c)
 
 
 ## Overview
