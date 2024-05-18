@@ -1,9 +1,9 @@
 # NFT Marketplace
 
-![npl2](https://i.imgur.com/YttaPcE.png)
+![NFT Marketplace screenshot](https://i.imgur.com/YttaPcE.png)
 
 The following is a UML sequence diagram of the project
-![npl2](https://github.com/AnasElii/NFT-Marketplace/assets/57045844/e4f37db4-157b-4ce8-8e15-153e2623bd9c)
+![Marketplace Diagram](https://github.com/AnasElii/NFT-Marketplace/assets/57045844/e4f37db4-157b-4ce8-8e15-153e2623bd9c)
 
 
 ## Overview
@@ -20,7 +20,7 @@ NFT Marketplace is a full-stack decentralized application (dApp) designed to cre
 ## Technology Stack
 
 - **Frontend**: Next.js, JavaScript
-- **Backend**: PHP
+- **Backend**: PHP, InterPlanetary File System
 - **Databases**: MySQL and other centralized and decentralized database solutions
 - **Blockchain**: Smart contracts developed using Hardhat and OpenZeppelin, deployed on a blockchain platform
 
@@ -38,10 +38,19 @@ NFT Marketplace is a full-stack decentralized application (dApp) designed to cre
    ```
 
 3. **Configure Environment Variables**
-   - Create a `.env` file in the root directory.
-   - Add necessary configuration settings (database credentials, blockchain network settings, etc.).
+   - Create a `.env.local` file in the root directory.
+   - Visit `Pinata Cloud` to sign up for a new free account.
 
-4. **Run the Application**
+   - add the `PINATA_JWT_TOKEN` and `NEXT_PUBLIC_NFT_MARKETPLACE_ADDRESS` fields
+  
+   - Add necessary configuration settings (database credentials, blockchain network settings, etc.).
+  
+4. **Run the Hardhat Nood**
+   If you are going to deploy the smart contract to a hardhat local network
+   deploy it in the port 3000
+   `npx hardhat node --hostname 0.0.0.0 --port 3000`
+
+1. **Run the Application**
    ```bash
    npm run dev
    ```
@@ -49,13 +58,15 @@ NFT Marketplace is a full-stack decentralized application (dApp) designed to cre
 ## Usage
 
 1. **Deploy Smart Contracts**
-   - Follow the instructions in the `contracts/` directory to deploy smart contracts using Hardhat and OpenZeppelin to your preferred blockchain network.
+  Follow the instructions in the `contracts/` directory to deploy smart contracts using Hardhat and OpenZeppelin to your preferred blockchain network.
+  
 
-2. **Start the Backend Server**
-   - Ensure your PHP server is configured correctly and running.
+1. **Start the Backend Server**
+   Ensure your PHP server is configured correctly and running.
 
-3. **Access the Marketplace**
-   - Open your browser and navigate to `http://localhost:3000` to start using the NFT Marketplace.
+
+1. **Access the Marketplace**
+   - Open your browser and navigate to `http://localhost:3001` to start using the NFT Marketplace.
 
 ## Educational Resource
 
