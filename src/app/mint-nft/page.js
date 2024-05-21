@@ -26,7 +26,7 @@ export default function MintNFT() {
 
     if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
 
-      if (walletAddress.length > 0) {
+      if (walletAddress > 0) {
 
         const provider = new ethers.BrowserProvider(window.ethereum);
 
@@ -75,6 +75,7 @@ export default function MintNFT() {
       } else {
         toast.warn(`Connect your wallet`);
       }
+
     } else {
       toast.error("Metamask not installed");
     }

@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "./Counters.sol";
+import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 contract NFTMarketplace is ERC721URIStorage {
@@ -13,7 +14,6 @@ contract NFTMarketplace is ERC721URIStorage {
         address payable contractAddress;
         address payable owner;
         uint price;
-        uint totalNFTs;
     }
 
     Counters.Counter private _nftIds;
@@ -30,6 +30,11 @@ contract NFTMarketplace is ERC721URIStorage {
         contractOwner = payable(msg.sender);
     }
 
+    // Getters
+    function getNFTIDs() external view returns (uint) {
+        return Counters.current(_nftIds);
+    }
+
     function mintNFT(string memory _tokenURI, uint price) external payable {
         uint nftId = Counters.current(_nftIds);
 
@@ -43,6 +48,7 @@ contract NFTMarketplace is ERC721URIStorage {
 
         NFT storage newNFT = _idToNFT[nftId];
 
+        newNFT.id = nftId;
         newNFT.contractAddress = payable(address(this));
         newNFT.owner = payable(msg.sender);
         newNFT.price = price;
