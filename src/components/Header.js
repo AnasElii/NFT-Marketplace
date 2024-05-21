@@ -66,9 +66,9 @@ export default function Header() {
           <Link href="/" className="min-[900px]:px-3">
             Home
           </Link>
-          <Link href="/mint-nft" className="min-[900px]:px-3">
+          <a href="/mint-nft/" className="min-[900px]:px-3">
             Mint NFT
-          </Link>
+          </a>
           <Link href="/my-nft" className="min-[900px]:px-3">
             My NFT
           </Link>

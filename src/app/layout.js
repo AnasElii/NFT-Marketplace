@@ -16,12 +16,23 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <WalletProvider>
+        <WalletProvider >
           <div className="flex flex-col min-h-screen">
             <Header />
             <main style={{ flex: '1 0 auto', width: '100%', backgroundColor: '#6B7280', paddingTop: 10 }}>
               {children}
-              <ToastContainer />
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+              />
             </main>
             <Footer style={{ flexShrink: '0' }} />
           </div>
