@@ -31,6 +31,7 @@ export default function Header() {
   }
 
   // Display the `walletAddress` upon refreshing the page
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const getConnectedWallet = async () => {
       try {
