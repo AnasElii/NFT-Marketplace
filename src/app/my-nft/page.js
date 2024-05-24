@@ -71,7 +71,7 @@ export default function Home() {
           return <NFTCard key={item.id} data={item} />
         })
       ) : (
-        <p>No NFT listed yet</p>
+        <p>No NFT listed</p>
       )}
     </div>
   );
