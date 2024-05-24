@@ -3,7 +3,7 @@ const { ethers } = require("hardhat");
 async function getInitializedContract() {
     
     const Counters = await ethers.getContractFactory("Counters");
-    const counters = await Counters.attach("0x610178dA211FEF7D417bC0e6FeD39F05609AD788");
+    const counters = await Counters.attach("0x5FbDB2315678afecb367f032d93F642f64180aa3");
     
     const NFTMarketplace = await ethers.getContractFactory("NFTMarketplace", {
         libraries:
@@ -11,7 +11,7 @@ async function getInitializedContract() {
             Counters: counters,
         }
     });
-    const marketplace = await NFTMarketplace.attach("0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e");
+    const marketplace = await NFTMarketplace.attach("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512");
     
     const listingPrice = await marketplace.listingPrice();
     const accounts = await ethers.getSigners();
