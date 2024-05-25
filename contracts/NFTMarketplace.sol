@@ -72,40 +72,6 @@ contract NFTMarketplace is ERC721URIStorage {
         Counters.increment(_nftIds);
     }
 
-    function getAllNFTs() external view returns (NFT[] memory) {
-        uint totlaItemCount = Counters.current(_nftIds);
-        NFT[] memory items = new NFT[](totlaItemCount);
-
-        for (uint i = 0; i < totlaItemCount; i++) {
-            NFT storage currentItem = _idToNFT[i];
-            items[i] = currentItem;
-        }
-
-        return items;
-    }
-
-    function getMyNfts() external view returns (NFT[] memory) {
-        uint totlaItemCount = Counters.current(_nftIds);
-        uint totalMyNfts = 0;
-
-        for (uint i = 0; i < totlaItemCount; i++) {
-            if (_idToNFT[i].owner == msg.sender) totalMyNfts += 1;
-        }
-
-        NFT[] memory items = new NFT[](totalMyNfts);
-        uint itemIndex = 0;
-
-        for (uint i = 0; i < totlaItemCount; i++) {
-            if (_idToNFT[i].owner == msg.sender) {
-                NFT storage currentItem = _idToNFT[i];
-                items[itemIndex] = currentItem;
-                itemIndex++;
-            }
-        }
-
-        return items;
-    }
-
     function buyNFT(uint id) external payable {
         require(id < Counters.current(_nftIds), "The Provided nft not exit");
         uint256 price = _idToNFT[id].price;

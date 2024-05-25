@@ -1,12 +1,10 @@
 'use client'
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ethers } from "ethers";
-import Image from "next/image";
 import axios from "axios";
 
 import NFTMarketplace from "/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import { toast } from "react-toastify";
-import { WalletContext } from "@/context/WalletContext";
 import NFTCard from "@/components/NFTCard";
 
 
@@ -19,32 +17,8 @@ export default function Home() {
     try {
 
       if (typeof window.ethereum !== 'undefined' && typeof window.web3 !== 'undefined') {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
 
-        const contract = new ethers.Contract(
-          process.env.NEXT_PUBLIC_NFT_MARKETPLACE_ADDRESS,
-          NFTMarketplace.abi,
-          signer
-        );
-
-        const nftsList = await contract.getAllNFTs();
-
-        let items = await Promise.all(nftsList.map(async (item) => {
-          const tokenURI = await contract.tokenURI(item.id);
-          let res = await axios.get(tokenURI);
-          const metadata = res.data;
-          console.log(metadata)
-          const NFT = {
-            id: item.id,
-            name: metadata.name,
-            owner: item.owner,
-            price: metadata.price,
-            img: metadata.img
-          }
-          return NFT;
-        })
-        );
+        let items = [];
 
         updateData(items);
 
