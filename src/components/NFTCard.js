@@ -2,10 +2,8 @@
 import { useContext } from 'react';
 import Image from "next/image";
 import axios from "axios";
-import { ethers } from "ethers";
 import { WalletContext } from "@/context/WalletContext";
 import { toast } from "react-toastify";
-import NFTMarketplace from "/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 
 export default function NFTCard(data) {
 

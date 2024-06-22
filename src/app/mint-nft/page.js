@@ -1,10 +1,8 @@
 'use client';
 import React, { useState, useContext } from 'react';
 import axios from "axios";
-import { ethers } from "ethers";
 import { ToastContainer, toast } from 'react-toastify';
 import { WalletContext } from "@/context/WalletContext";
-import NFTMarketplace from '/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json';
 
 
 

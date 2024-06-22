@@ -1,9 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
-import { ethers } from "ethers";
 import axios from "axios";
 
-import NFTMarketplace from "/artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import { toast } from "react-toastify";
 import NFTCard from "@/components/NFTCard";
 

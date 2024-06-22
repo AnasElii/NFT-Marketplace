@@ -1,14 +1,18 @@
 # NFT Marketplace
 
-![NFT Marketplace screenshot](https://i.imgur.com/YttaPcE.png)
+[NFT Marketplace screenshot](https://i.imgur.com/YttaPcE.png)
 
 The following is a UML sequence diagram of the project
-![Marketplace Diagram](https://github.com/AnasElii/NFT-Marketplace/assets/57045844/e4f37db4-157b-4ce8-8e15-153e2623bd9c)
+[Marketplace Diagram](https://github.com/AnasElii/NFT-Marketplace/assets/57045844/e4f37db4-157b-4ce8-8e15-153e2623bd9c)
 
 
 ## Overview
 
-NFT Marketplace is a full-stack decentralized application (dApp) designed to create a cost-efficient and secure marketplace for Non-Fungible Tokens (NFTs). This project integrates both centralized and decentralized backends to optimize cost without compromising security. The smart contracts used in this project are developed with a focus on cost efficiency while ensuring the security of the marketplace. Additionally, this project serves as an educational resource for anyone interested in learning about building dApps and NFT marketplaces.
+NFT Marketplace is the front-end component of a full-stack decentralized application (dApp) designed to create a cost-efficient and secure marketplace for Non-Fungible Tokens (NFTs). This project serves as an educational resource for anyone interested in learning about building dApps and NFT marketplaces.
+
+Please note that this is only the front-end portion of the project. You can find the **Blockchain-Integrated Backend Architecture**, which offers a ***hybrid backend*** combining both decentralized and centralized elements, [here](https://github.com/AnasElii/blockchain-integrated-backend-architecture).
+
+For those interested in a ***fully decentralized backend***, you can utilize the **Serverless Backend**. This backend ensures the creation of a fully decentralized architecture, leveraging both ***The Graph Protocol*** for indexing and ***Pinata IPFS*** for decentralized file storage. You can find more details about it [here](https://github.com/AnasElii/Serverless-Backend).
 
 ## Features
 
@@ -20,9 +24,6 @@ NFT Marketplace is a full-stack decentralized application (dApp) designed to cre
 ## Technology Stack
 
 - **Frontend**: Next.js, JavaScript
-- **Backend**: PHP, InterPlanetary File System
-- **Databases**: MySQL and other centralized and decentralized database solutions
-- **Blockchain**: Smart contracts developed using Hardhat and OpenZeppelin, deployed on a blockchain platform
 
 ## Installation
 
@@ -37,36 +38,16 @@ NFT Marketplace is a full-stack decentralized application (dApp) designed to cre
    npm install
    ```
 
-3. **Configure Environment Variables**
-   - Create a `.env.local` file in the root directory.
-   - Visit `Pinata Cloud` to sign up for a new free account.
-
-   - add the `PINATA_JWT_TOKEN` and `NEXT_PUBLIC_NFT_MARKETPLACE_ADDRESS` fields
-  
-   - Add necessary configuration settings (database credentials, blockchain network settings, etc.).
-  
-4. **Run the Hardhat Nood**
-   If you are going to deploy the smart contract to a hardhat local network
-   deploy it in the port 3000
-   `npx hardhat node --hostname 0.0.0.0 --port 3000`
+## Usage
 
 1. **Run the Application**
    ```bash
    npm run dev
    ```
-
-## Usage
-
-1. **Deploy Smart Contracts**
-  Follow the instructions in the `contracts/` directory to deploy smart contracts using Hardhat and OpenZeppelin to your preferred blockchain network.
-  
-
-1. **Start the Backend Server**
-   Ensure your PHP server is configured correctly and running.
-
+   Ensure your frontend is configured correctly and running.
 
 1. **Access the Marketplace**
-   - Open your browser and navigate to `http://localhost:3001` to start using the NFT Marketplace.
+   Open your browser and navigate to `http://localhost:3001` to start using the NFT Marketplace.
 
 ## Educational Resource
 
