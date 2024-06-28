@@ -1,96 +1,114 @@
 'use client';
 import { useContext } from 'react';
-import Image from "next/image";
 import axios from "axios";
+import BigNumber from 'bignumber.js';
+import FormData from 'form-data';
+
+import Image from "next/image";
 import { WalletContext } from "@/context/WalletContext";
 import { toast } from "react-toastify";
+
+const ipfsGateway = 'https://ipfs.io/ipfs/';
+
+function weiToEther(wei) {
+    const weiBN = new BigNumber(wei);
+    const etherBN = weiBN.dividedBy(new BigNumber('1000000000000000000'));
+    return etherBN.toString();
+}
+
+function imageURI(fullURI) {
+    const cid = fullURI.replace('ipfs://', '');
+    return ipfsGateway + cid
+}
 
 export default function NFTCard(data) {
 
     const { walletAddress } = useContext(WalletContext);
     // const walletAddressLowerCase = walletAddress.toLowerCase();
-    let imgURL = 'https://ipfs.io/ipfs/' + data.data.img;
-    const ownerAddress = data.data.owner.toLowerCase();
+
+    const { id, nftID, name, description, owner, price, image } = data.data;
+
+    let imgURL = imageURI(image);
+    const ownerAddress = owner.toLowerCase();
+    const walletOwnerAddress = walletAddress !== null ? walletAddress[0].toLowerCase() : 0;
+    const PriceInEther = weiToEther(price);
+
     let buttonText = "Connect Wallet";
     if (walletAddress > 0) {
-        buttonText = data.data.owner.toLowerCase() === walletAddress[0].toLowerCase() ? "Owned" : "Buy Now";
+        buttonText = ownerAddress === walletOwnerAddress ? "Owned" : "Buy Now";
+    } else {
+        buttonText = "Connect Wallet";
     }
 
     async function buyNFT() {
-        console.log("Buying NFT");
         try {
             if (typeof window.ethereum !== 'undefined' && typeof window.web3 !== 'undefined') {
                 if (walletAddress > 0) {
 
-                    const provider = new ethers.BrowserProvider(window.ethereum);
-                    const signer = await provider.getSigner();
-                    const balance = await provider.getBalance(signer);
-                    const NFTPriceInWei = ethers.parseEther(data.data.price);
+                    const formData = new FormData();
+                    formData.append('owner', owner);
+                    formData.append('price', PriceInEther);
+                    formData.append('id', nftID);
 
-                    if (NFTPriceInWei <= balance) {
-
-                        const contract = new ethers.Contract(
-                            process.env.NEXT_PUBLIC_NFT_MARKETPLACE_ADDRESS,
-                            NFTMarketplace.abi,
-                            signer
-                        );
-
-                        let transaction = await contract.buyNFT(
-                            data.data.id,
-                            { value: NFTPriceInWei }
-                        )
-
-                        await transaction.wait();
-
-                        if (transaction) {
-                            toast.success(`Transaction complete with success!`);
-                        }
-
+                    try {
+                        const response = await axios.post(`http://localhost:4000/api/buyNFT`, formData); // Step 2 & 3: Verify endpoint and formData
+                        console.log(response.data); // Assuming the response contains the data you need
+                    } catch (error) {
+                        console.error('Error Sending Request:', error.response ? error.response.data : error.message); // Step 4: Improved error handling
                     }
+
+                    if (!response.status === 200) {
+                        toast.error(`Error buying NFT: ${response.statusText}`);
+                        console.log("Error buying NFT: ", response.statusText);
+                    }
+
+                    toast.success(`Transaction complete with success!`);
                 } else {
-                    toast.error("Metamask not installed")
+                    toast.error("Connect Wallet to buy NFT");
                 }
             } else {
-                toast.error("Connect Wallet to buy NFT");
+                toast.error("Metamask not installed");
             }
-
 
         } catch (error) {
             toast.error("Error buying NFT", error.message);
+            console.error("Error buying NFT: ", error)
         }
     }
 
     return (
 
         <div className="flex flex-col items-center justify-center">
-            <div class="md:px-4 md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 space-y-4 md:space-y-0">
-                <div class="max-w-sm bg-white px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500">
-                    {/* <h3 class="mb-3 text-xl font-bold text-indigo-600">Intermediate</h3> */}
-                    <div class="relative  h-[300px]">
-                        <Image class="w-full rounded-xl" src={imgURL} fill alt="Image of the NFT" />
-                        <p class="absolute top-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg">{`${data.data.price} ETH`}</p>
-                        {/* <p class="absolute top-0 right-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-tr-lg rounded-bl-lg">%20 Discount</p> */}
+            <div className="md:px-4 md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 space-y-4 md:space-y-0">
+                <div className="max-w-sm bg-white px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500">
+                    <h3 class="mb-3 text-xl font-bold text-white bg-indigo-600 py-1 rounded-xl ">{nftID}</h3>
+                    <h3 class="mb-3 text-xl font-bold text-indigo-600">{id}</h3>
+                    <div className="relative h-[300px]">
+
+                        <Image
+                            className="w-full rounded-xl"
+                            src={imgURL}
+                            fill
+                            alt="Image of the NFT"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                        />
+                        <p className="absolute top-0 bg-yellow-300 text-gray-800 font-semibold py-1 px-3 rounded-br-lg rounded-tl-lg">
+                            {`${PriceInEther} ETH`}
+                        </p>
                     </div>
-                    <h1 class="mt-4 text-gray-800 text-2xl font-bold cursor-pointer">{`${data.data.name}`}</h1>
-                    <div class="my-4 text-black">
-                        {/* <div class="flex space-x-1 items-center">
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 mb-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </span>
-                            <p>1:34:23 Minutes</p>
-                        </div> */}
-                        <div class="flex space-x-1 items-center">
+
+                    <h1 className="mt-4 text-gray-800 text-2xl font-bold cursor-pointer">{`${name}`}</h1>
+                    <div className="my-4 text-black">
+                        <div className="flex space-x-1 items-center">
                             <span className="font-semibold">Owner: </span>
-                            <p>{data.data.owner.substring(0, 7) + "..."}</p>
+                            <p>{owner.substring(0, 7) + "..."}</p>
                         </div>
-                        <div class="flex space-x-1 items-center">
+                        <div className="flex space-x-1 items-center">
                             <span className="font-semibold">Price: </span>
-                            <p>{data.data.price} ETH</p>
+                            <p>{PriceInEther} ETH</p>
                         </div>
                         <button onClick={buyNFT} class="mt-4 text-xl w-full text-white bg-indigo-600 py-2 rounded-xl shadow-lg"
-                            disabled={data.data.owner.toLowerCase() === walletAddress[0].toLowerCase() ? true : false}>
+                            disabled={ownerAddress === walletOwnerAddress ? true : false}>
                             {buttonText}
                         </button>
                     </div>
@@ -98,6 +116,7 @@ export default function NFTCard(data) {
             </div>
 
         </div>
+
     )
 
 }

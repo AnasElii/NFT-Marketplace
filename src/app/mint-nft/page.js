@@ -12,6 +12,7 @@ export default function MintNFT() {
 
   const [nftData, setNftData] = useState({
     name: "",
+    description: "",
     price: ""
   });
   const [file, setFile] = useState(null);
@@ -26,46 +27,52 @@ export default function MintNFT() {
 
       if (walletAddress > 0) {
 
-        const provider = new ethers.BrowserProvider(window.ethereum);
-
         try {
+
           const formData = new FormData();
           formData.append("name", nftData.name);
+          formData.append("description", nftData.description);
           formData.append("price", nftData.price);
-          formData.append("file", file);
+          formData.append("image", file);
 
-          let res = await axios.post('/api/mint-nft', formData);
+          // let res = await axios.post('/api/mint-nft', formData);
 
-          const NFT_URI = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
-          const signer = await provider.getSigner();
-          const balance = await provider.getBalance(signer);
-          const NFTPriceInWei = ethers.parseEther(nftData.price);
+          const response = await axios.post("http://localhost:4000/api/mintNFT", formData);
 
-          if (NFTPriceInWei <= balance) {
-            const contract = new ethers.Contract(
-              process.env.NEXT_PUBLIC_NFT_MARKETPLACE_ADDRESS,
-              NFTMarketplace.abi,
-              signer
-            );
-            const listingPrice = await contract.listingPrice();
-            console.log("Listing Price:", listingPrice);
-
-            let transaction = await contract.mintNFT(
-              NFT_URI,
-              NFTPriceInWei,
-              { value: listingPrice }
-            );
-
-            // Wait for the 'transaction' to be completed
-            await transaction.wait();
-
-            if(transaction){
-              toast.success(`Transaction complete with success!`);
-            }
-
-          } else {
-            toast.error("Not enoth ether provided!");
+          if (response.status === 200) {
+            toast.success(`Transaction complete with success!`);
           }
+
+          // const NFT_URI = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
+          // const signer = await provider.getSigner();
+          // const balance = await provider.getBalance(signer);
+          // const NFTPriceInWei = ethers.parseEther(nftData.price);
+
+          // if (NFTPriceInWei <= balance) {
+          //   const contract = new ethers.Contract(
+          //     process.env.NEXT_PUBLIC_NFT_MARKETPLACE_ADDRESS,
+          //     NFTMarketplace.abi,
+          //     signer
+          //   );
+          //   const listingPrice = await contract.listingPrice();
+          //   console.log("Listing Price:", listingPrice);
+
+          //   let transaction = await contract.mintNFT(
+          //     NFT_URI,
+          //     NFTPriceInWei,
+          //     { value: listingPrice }
+          //   );
+
+          //   // Wait for the 'transaction' to be completed
+          //   await transaction.wait();
+
+          //   if (transaction) {
+          //     toast.success(`Transaction complete with success!`);
+          //   }
+
+          // } else {
+          //   toast.error("Not enoth ether provided!");
+          // }
 
         } catch (error) {
           toast.error(`Error minting NFT ${error.message}`);
@@ -97,6 +104,18 @@ export default function MintNFT() {
             vlaue={nftData.name}
             onChange={(e) => {
               setNftData({ ...nftData, name: e.target.value });
+            }}
+          />
+          <label htmlFor="description" className="text-xl font-bold text-white">NFT Description <span className="text-red-700">*</span>
+          </label>
+          <input
+            type="text"
+            name="description"
+            id="description"
+            className="min-w-full mt-3 rounded min-h-[35px] text-black p-2 border-2 border-sky-900"
+            vlaue={nftData.description}
+            onChange={(e) => {
+              setNftData({ ...nftData, description: e.target.value });
             }}
           />
           <label htmlFor="name" className="text-xl font-bold text-white">NFT Image <span className="text-red-700">*</span>
