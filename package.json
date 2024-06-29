@@ -32,11 +32,14 @@
   },
   "homepage": "https://github.com/AnasElii/NFT-Marketplace#readme",
   "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
     "axios": "^1.6.8",
     "bignumber.js": "^9.1.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.1",
     "form-data": "^4.0.0",
-    "next": "14.2.3",
+    "next": "^14.2.3",
     "react": "^18",
     "react-dom": "^18",
     "react-toastify": "^10.0.5"

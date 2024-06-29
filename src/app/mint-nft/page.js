@@ -1,10 +1,10 @@
 'use client';
 import React, { useState, useContext } from 'react';
-import axios from "axios";
+import axios from 'axios';
+import * as ethers from 'ethers';
 import { ToastContainer, toast } from 'react-toastify';
-import { WalletContext } from "@/context/WalletContext";
-
-
+import { WalletContext } from '@/context/WalletContext';
+import NFTMarketplace from '../../../artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json';
 
 export default function MintNFT() {
 
@@ -27,7 +27,25 @@ export default function MintNFT() {
 
       if (walletAddress > 0) {
 
+        const provider = new ethers.BrowserProvider(window.ethereum);
+
         try {
+
+          const isValidAddress = ethers.isAddress(walletAddress);
+          if (!isValidAddress) {
+            console.error("Invalid Ethereum address:", walletAddress);
+            return toast.error("Invalid Ethereum address");
+          }
+
+          const signer = await provider.getSigner();
+          const balance = await provider.getBalance(signer);
+          const NFTPriceInWei = ethers.parseEther(nftData.price);
+
+
+          // Checking the balance
+          if (NFTPriceInWei >= balance) {
+            return toast.error("Insufficient Funds");
+          }
 
           const formData = new FormData();
           formData.append("name", nftData.name);
@@ -35,54 +53,47 @@ export default function MintNFT() {
           formData.append("price", nftData.price);
           formData.append("image", file);
 
-          // let res = await axios.post('/api/mint-nft', formData);
-
-          const response = await axios.post("http://localhost:4000/api/mintNFT", formData);
+          const response = await axios.post(`http://localhost:${process.env.NEXT_PUBLIC_PORT}/api/mintNFT`, formData);
 
           if (response.status === 200) {
-            toast.success(`Transaction complete with success!`);
+            // toast.success(`Transaction complete with success!`);
+            console.log("Data from IPFS: ", response.data);
           }
 
-          // const NFT_URI = `https://ipfs.io/ipfs/${res.data.IpfsHash}`;
-          // const signer = await provider.getSigner();
-          // const balance = await provider.getBalance(signer);
-          // const NFTPriceInWei = ethers.parseEther(nftData.price);
+          const { NFT_URI, listingPriceInEther } = response.data;
+          const listingPrice = ethers.parseEther(listingPriceInEther);
 
-          // if (NFTPriceInWei <= balance) {
-          //   const contract = new ethers.Contract(
-          //     process.env.NEXT_PUBLIC_NFT_MARKETPLACE_ADDRESS,
-          //     NFTMarketplace.abi,
-          //     signer
-          //   );
-          //   const listingPrice = await contract.listingPrice();
-          //   console.log("Listing Price:", listingPrice);
+          const contract = new ethers.Contract(
+            process.env.NEXT_PUBLIC_NFT_MARKETPLACE_CONTRACT_ADDRESS,
+            NFTMarketplace.abi,
+            signer
+          );
 
-          //   let transaction = await contract.mintNFT(
-          //     NFT_URI,
-          //     NFTPriceInWei,
-          //     { value: listingPrice }
-          //   );
+          // Minting the NFT
+          let transaction = await contract.mintNFT(
+            NFT_URI,
+            NFTPriceInWei,
+            { value: listingPrice }
+          );
 
-          //   // Wait for the 'transaction' to be completed
-          //   await transaction.wait();
+          await transaction.wait();
 
-          //   if (transaction) {
-          //     toast.success(`Transaction complete with success!`);
-          //   }
-
-          // } else {
-          //   toast.error("Not enoth ether provided!");
-          // }
+          if (transaction) {
+            return toast.success("NFT Minted Successfully");
+          }
 
         } catch (error) {
           toast.error(`Error minting NFT ${error.message}`);
+          console.error("Error minting NFT: ", error);
         }
       } else {
         toast.warn(`Connect your wallet`);
+        console.error("Wallet not connected");
       }
 
     } else {
       toast.error("Metamask not installed");
+      console.error("Metamask not installed");
     }
   }
 
