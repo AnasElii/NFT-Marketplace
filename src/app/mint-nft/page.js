@@ -31,11 +31,11 @@ export default function MintNFT() {
 
         try {
 
-          const isValidAddress = ethers.isAddress(walletAddress[0].toLowerCase());
-          if (!isValidAddress) {
-            console.error("Invalid Ethereum address:", isValidAddress);
-            return toast.error("Invalid Ethereum address");
-          }
+          // const isValidAddress = ethers.isAddress(walletAddress[0]);
+          // if (!isValidAddress) {
+          //   console.error("Invalid Ethereum address:", isValidAddress);
+          //   return toast.error("Invalid Ethereum address");
+          // }
 
           const signer = await provider.getSigner();
           const balance = await provider.getBalance(signer);
