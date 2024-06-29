@@ -1,12 +1,12 @@
 'use client';
 import { useContext } from 'react';
-import axios from "axios";
 import BigNumber from 'bignumber.js';
-import FormData from 'form-data';
+import * as ethers from 'ethers';
 
 import Image from "next/image";
 import { WalletContext } from "@/context/WalletContext";
 import { toast } from "react-toastify";
+import NFTMarketplace from '../../artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json';
 
 const ipfsGateway = 'https://ipfs.io/ipfs/';
 
@@ -24,9 +24,12 @@ function imageURI(fullURI) {
 export default function NFTCard(data) {
 
     const { walletAddress } = useContext(WalletContext);
-    // const walletAddressLowerCase = walletAddress.toLowerCase();
 
     const { id, nftID, name, description, owner, price, image } = data.data;
+
+    if (!nftID || !owner || !price) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
 
     let imgURL = imageURI(image);
     const ownerAddress = owner.toLowerCase();
@@ -43,26 +46,48 @@ export default function NFTCard(data) {
     async function buyNFT() {
         try {
             if (typeof window.ethereum !== 'undefined' && typeof window.web3 !== 'undefined') {
+
+                const provider = new ethers.BrowserProvider(window.ethereum);
+
                 if (walletAddress > 0) {
 
-                    const formData = new FormData();
-                    formData.append('owner', owner);
-                    formData.append('price', PriceInEther);
-                    formData.append('id', nftID);
-
-                    try {
-                        const response = await axios.post(`http://localhost:4000/api/buyNFT`, formData); // Step 2 & 3: Verify endpoint and formData
-                        console.log(response.data); // Assuming the response contains the data you need
-                    } catch (error) {
-                        console.error('Error Sending Request:', error.response ? error.response.data : error.message); // Step 4: Improved error handling
+                    const isValidAddress = ethers.isAddress(walletOwnerAddress);
+                    if (!isValidAddress) {
+                        console.error("Invalid Ethereum address:", walletOwnerAddress);
+                        return toast.error("Invalid Ethereum address");
                     }
 
-                    if (!response.status === 200) {
-                        toast.error(`Error buying NFT: ${response.statusText}`);
-                        console.log("Error buying NFT: ", response.statusText);
+                    const signer = await provider.getSigner();
+                    const balance = await provider.getBalance(signer);
+                    const priceToWei = ethers.parseEther(PriceInEther);
+
+                    // Checking the balance
+                    if (priceToWei >= balance) {
+                        return res.status(400).json({ message: "Insufficient Funds" });
                     }
 
-                    toast.success(`Transaction complete with success!`);
+                    // Check if the NFT is owned by the buyer
+                    if (ownerAddress === signer.address.toLowerCase()) {
+                        return toast.info("You already own this NFT");
+                    }
+
+                    const contract = new ethers.Contract(
+                        process.env.NEXT_PUBLIC_NFT_MARKETPLACE_CONTRACT_ADDRESS,
+                        NFTMarketplace.abi,
+                        signer
+                    )
+
+                    let transaction = await contract.buyNFT(
+                        nftID,
+                        { value: priceToWei }
+                    )
+
+                    await transaction.wait();
+
+                    if (transaction) {
+                        toast.success(`Transaction complete with success!`);
+                    }
+
                 } else {
                     toast.error("Connect Wallet to buy NFT");
                 }
@@ -77,7 +102,6 @@ export default function NFTCard(data) {
     }
 
     return (
-
         <div className="flex flex-col items-center justify-center">
             <div className="md:px-4 md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 space-y-4 md:space-y-0">
                 <div className="max-w-sm bg-white px-6 pt-6 pb-2 rounded-xl shadow-lg transform hover:scale-105 transition duration-500">
@@ -114,10 +138,7 @@ export default function NFTCard(data) {
                     </div>
                 </div>
             </div>
-
         </div>
-
     )
-
 }
 

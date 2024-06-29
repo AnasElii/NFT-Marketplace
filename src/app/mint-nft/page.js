@@ -2,7 +2,7 @@
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import * as ethers from 'ethers';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { WalletContext } from '@/context/WalletContext';
 import NFTMarketplace from '../../../artifacts/contracts/NFTMarketplace.sol/NFTMarketplace.json';
 
@@ -31,9 +31,9 @@ export default function MintNFT() {
 
         try {
 
-          const isValidAddress = ethers.isAddress(walletAddress);
+          const isValidAddress = ethers.isAddress(walletAddress[0].toLowerCase());
           if (!isValidAddress) {
-            console.error("Invalid Ethereum address:", walletAddress);
+            console.error("Invalid Ethereum address:", isValidAddress);
             return toast.error("Invalid Ethereum address");
           }
 
